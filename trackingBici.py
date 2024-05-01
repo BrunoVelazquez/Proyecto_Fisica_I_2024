@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
 import matplotlib.pyplot as plt
+import json
 
 DIR = 'Videos/'
 FILE1 = 'vid1.mp4'
@@ -41,12 +42,11 @@ def write_data_to_file(file_path, data):
 
 def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     # Extraigo del archivo los datos de conversion
-    ruta_archivo = 'Conversiones\Pixeles_A_Metros.txt'
-    #with open(ruta_archivo,"r") as archivo:
-    #    contenido = archivo.read()
-    #    valor = float(contenido)
-
-
+    ruta_archivo = 'Conversiones\Pixeles_A_Metros.json'
+    with open(ruta_archivo,"r") as archivo:
+        datos = json.load(archivo)
+        valor = float(datos[id-1]["valor"])
+    
     cap = cv2.VideoCapture(video_path)
     cantidad_frames = 0
     cuadros = []
@@ -89,20 +89,6 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
 
     cap.release()
     cv2.destroyAllWindows() 
-
-    if id == 1:
-        valor = 0.00897381812634432
-    else:
-        if id == 2:
-            valor = 0.008110213653567056
-        else:
-            if id == 3:
-                valor = 0.00780340688235733
-            else:
-                if id == 4:
-                    valor = 0.008445287789158155
-                else:
-                    valor = 0.006923984374912447               
 
     posiciones_x = np.multiply(posiciones_x,valor) #para tener posiciones en metros
 
