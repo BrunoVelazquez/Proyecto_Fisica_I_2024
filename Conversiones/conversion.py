@@ -33,7 +33,7 @@ def click_event(event, x, y, flags, param):
             points = []
             cv2.destroyAllWindows()
 
-video_path = "vid1.mov"
+video_path = "vid1.mp4"
 output_path = "primer_frame.jpg"
 
 # Capturamos el primer frame

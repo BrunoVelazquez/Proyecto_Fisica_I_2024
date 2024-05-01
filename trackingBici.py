@@ -3,6 +3,13 @@ import numpy as np
 from scipy.ndimage import gaussian_filter1d
 import matplotlib.pyplot as plt
 
+DIR = 'Videos/'
+FILE1 = 'vid1.mp4'
+FILE2 = 'vid2.mp4'
+FILE3 = 'vid3.mp4'
+FILE4 = 'vid4.mp4'
+FILE5 = 'vid5.mp4'
+
 def startTrack(img, tracker):
     x, y, w, h = int(tracker[0]), int(tracker[1]), int(tracker[2]), int(tracker[3])
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (0, 0, 255), 3, 1)
@@ -233,7 +240,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)
     plt.show()
 
-videos = ['vid1.mov','vid2.mov','vid3.mov','vid4.mov','vid5.mov']
+videos = [DIR + FILE1, DIR + FILE2, DIR + FILE3, DIR + FILE4, DIR + FILE5]
 
 
 # Arreglos para almacenar las posiciones x 
