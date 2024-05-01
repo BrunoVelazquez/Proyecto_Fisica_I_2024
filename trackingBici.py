@@ -52,7 +52,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     cuadros = []
 
     tracked = cv2.TrackerCSRT_create()
-    #tracked = cv2.legacy.TrackerMOSSE_create() Mas rapido, lo usamos para pruebas
+    # tracked = cv2.legacy.TrackerMOSSE_create() # Mas rapido, lo usamos para pruebas
     success, img = cap.read()
 
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))    
@@ -84,7 +84,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
         key = cv2.waitKey(25)
         if key == 27:
             break
-        if key == ord('s'):
+        else:
             cuadros.append(cantidad_frames)
 
     cap.release()
@@ -241,6 +241,4 @@ for i in range(1,6):
     vx = []
     ax = []
     viscous_force = []
-    ruta_video = videos[i-1]
-    print(ruta_video)
-    process_video(i,ruta_video,posiciones_x,vx,ax,viscous_force)
+    process_video(i,videos[i-1],posiciones_x,vx,ax,viscous_force)
