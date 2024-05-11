@@ -2,6 +2,14 @@ import cv2
 import numpy as np
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
+import json
+
+DIR = ''
+FILE1 = 'vid1.mov'
+FILE2 = 'vid2.mov'
+FILE3 = 'vid3.mov'
+FILE4 = 'vid4.mov'
+FILE5 = 'vid5.mov'
 
 def startTrack(img, tracker):
     x, y, w, h = int(tracker[0]), int(tracker[1]), int(tracker[2]), int(tracker[3])
@@ -203,7 +211,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
             file.write(f"{item},")
 
 
-videos = ['vid1.mov','vid2.mov','vid3.mov','vid4.mov','vid5.mov']
+videos = [DIR + FILE1, DIR + FILE2, DIR + FILE3, DIR + FILE4, DIR + FILE5]
 
 
 # Arreglos para almacenar las posiciones x 
@@ -219,4 +227,4 @@ for i in range(1,6):
     viscous_force = []
     ruta_video = videos[i-1]
     print(ruta_video)
-    process_video(i,ruta_video,posiciones_x,vx,ax,viscous_force)
+    process_video(i,ruta_video,posiciones_x,vx,ax,viscous_force)    process_video(i,videos[i-1],posiciones_x,vx,ax,viscous_force)
