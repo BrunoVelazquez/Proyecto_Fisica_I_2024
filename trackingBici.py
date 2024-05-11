@@ -86,7 +86,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
         key = cv2.waitKey(25)
         if key == 27:
             break
-        if key == ord('s'):
+        else:
             cuadros.append(cantidad_frames)
 
     cap.release()
@@ -97,7 +97,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
 
 
 
-    dir_base = f'Datos_Extraidos_Bici\Datos_Video_{i}'
+    dir_base = f'Datos_Extraidos_Bici\Datos_Video_{id}'
 
 
     # Para calcular el tiempo_final(duracion del video) al saber que el celular graba a 30 FPS divido
@@ -162,11 +162,11 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     plt.show()
 
      # Rutas de los archivos
-    file_path_posiciones = f'{dir_base}\\posicion_{i}.txt'
-    file_path_velocidad = f'{dir_base}\\velocidad_{i}.txt'
-    file_path_aceleracion = f'{dir_base}\\aceleracion_{i}.txt'
-    file_path_fuerza_viscosa = f'{dir_base}\\fuerza_viscosa_{i}.txt'
-    file_path_tiempo = f'{dir_base}\\tiempo_{i}.txt'
+    file_path_posiciones = f'{dir_base}\\posicion_{id}.txt'
+    file_path_velocidad = f'{dir_base}\\velocidad_{id}.txt'
+    file_path_aceleracion = f'{dir_base}\\aceleracion_{id}.txt'
+    file_path_fuerza_viscosa = f'{dir_base}\\fuerza_viscosa_{id}.txt'
+    file_path_tiempo = f'{dir_base}\\tiempo_{id}.txt'
 
     # Escribir en los archivos
     with open(file_path_posiciones, "w") as file:
@@ -200,6 +200,4 @@ for i in range(1,6):
     vx = []
     ax = []
     viscous_force = []
-    ruta_video = videos[i-1]
-    print(ruta_video)
-    process_video(i,ruta_video,posiciones_x,vx,ax,viscous_force)    process_video(i,videos[i-1],posiciones_x,vx,ax,viscous_force)
+    process_video(i,videos[i-1],posiciones_x,vx,ax,viscous_force)
