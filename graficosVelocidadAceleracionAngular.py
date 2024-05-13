@@ -26,8 +26,8 @@ for i in range(1, 6):
                     aceleraciones_angulares.append(float(valor))
 
    
-    velocidad_angular_suavizada = savgol_filter(velocidades_angulares,len(velocidades_angulares),5)
-    aceleracion_angular_suavizada = savgol_filter(aceleraciones_angulares,len(aceleraciones_angulares),5)
+    velocidad_angular_suavizada = savgol_filter(velocidades_angulares,len(velocidades_angulares),3)
+    aceleracion_angular_suavizada = savgol_filter(aceleraciones_angulares,len(aceleraciones_angulares),3)
 
     # Graficamos los datos
     fig, axs = plt.subplots(3, 2, figsize=(14, 10))

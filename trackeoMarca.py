@@ -100,14 +100,8 @@ for i in range(1, 6):
     # Calculamos la velocidad angular
     velocidad_angular = [vx[i]+vy[i] - velocidades_bici[i] for i in range(len(vx))]
 
-    print("velocidades bici")
-    print(velocidades_bici)
-    print("vx")
-    print(vx)
-    print("vy")
-    print(vy)
-    print("velocidad angular")
-    print(velocidad_angular)
+    velocidad_angular = np.divide(velocidad_angular,0.7366)
+
 
     # Guardamos la velocidad angular en un archivo
     with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidades_angulares_{i}.txt', 'w') as f:
@@ -167,40 +161,4 @@ for i in range(1, 6):
 
 
     # Leer video frame a frame y graficar vectores
-    cap = cv2.VideoCapture(f'vid{i}.mov')
-    frame_count = 0
-    x = 0
-    y = 0
-    z = 0
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-
-        # Graficar vectores en la imagen
-        if frame_count == 0:
-            print()
-        else:
-            if frame_count == 1:
-                color = (0, 255, 0)
-                cv2.imwrite(f'Vectores\\Video{i}\\\imagen{frame_count}.jpg', frame)
-                imagen = cv2.imread(f'Vectores\\Video{i}\\imagen{frame_count}.jpg')
-                imagen_con_vector = cv2.arrowedLine(imagen, (int(posiciones_x[1]), int(posiciones_y[1])), (int(vx[z]), int(vy[z])), color, thickness=2)
-                cv2.imwrite(f'Vectores\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
-                #cv2.imshow('Imagen con vector', imagen_con_vector)
-                cv2.waitKey(0)
-                z = z + 1
-            else:
-                color = (0, 255, 0)
-                cv2.imwrite(f'Vectores\\Video{i}\\\imagen{frame_count}.jpg', frame)
-                imagen = cv2.imread(f'Vectores\\Video{i}\\imagen{frame_count}.jpg')
-                imagen_con_vector = cv2.arrowedLine(imagen, (int(posiciones_x[x]), int(posiciones_y[x])), (int(vx[z]), int(vy[z])), color, thickness=2)
-                cv2.imwrite(f'Vectores\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
-                z = z + 1
-                y = y + 1
-
-        frame_count += 1
-        x = x + 1
-
-    cap.release()
+   
