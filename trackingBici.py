@@ -83,11 +83,8 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
             cv2.putText(img, "Lost Object", (75, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 3)
 
         cv2.imshow("Sample", img)
-        key = cv2.waitKey(25)
-        if key == 27:
+        if cv2.waitKey(1) == 27:
             break
-        else:
-            cuadros.append(cantidad_frames)
 
     cap.release()
     cv2.destroyAllWindows() 
