@@ -11,76 +11,81 @@ FILE3 = 'vid3.mov'
 FILE4 = 'vid4.mov'
 FILE5 = 'vid5.mov'
 
-"""
-Actualiza el trackeo de la imagen, según el tracker.
-
-Parametros:
-    img: Imagen/Frame a ser trackeada.
-    tracker: Lista con los datos del tracker (x, y, w, h).
-"""
 def startTrack(img, tracker):
+    """
+    Inicia el seguimiento del objeto en la imagen.
+
+    Parametros:
+        img: Imagen donde se realiza el seguimiento.
+        tracker: Lista con las coordenadas del tracker (x, y, w, h).
+    """
     x, y, w, h = int(tracker[0]), int(tracker[1]), int(tracker[2]), int(tracker[3])
+
+    # Dibujar un rectángulo alrededor del objeto rastreado
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (0, 0, 255), 3, 1)
+
+    # Agregar texto de "Tracking" en la imagen
     cv2.putText(img, "Tracking", (75, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 3)
+
     global posicion_x_actual
     posicion_x_actual = x
     # Agregar las posiciones x al arreglo
     posiciones_x.append(x)
 
-"""
-Calcula la aceleración, en base a la velocidad y los valores de tiempo
-
-Parametros:
-vx (array): Arreglo de valores de velocidades.
-t_values (array): Arreglo de valores de tiempo.
-
-Retorna:
-array: Valores de aceleración
-"""
 def calculate_aceleration(vx, t_values):
+    """
+    Calcula la aceleración, en base a la velocidad y los valores de tiempo
+
+    Parametros:
+    vx (array): Arreglo de valores de velocidades.
+    t_values (array): Arreglo de valores de tiempo.
+
+    Retorna:
+    array: Valores de aceleración
+    """
     ax = np.diff(vx) / np.diff(t_values) # La función diff() de numpy calcula la diferencia entre dos puntos sucesivos.
 
     return ax.round(2)
 
-"""
-Calcula la velocidad, en base a la aceleración y los valores de tiempo
-
-Parametros:
-x_values (array): Arreglo de valores de posición.
-t_values (array): Arreglo de valores de tiempo.
-
-Retorna:
-array: Valores de velocidad
-"""
 def calculate_velocity(x_values, t_values):
-    dx_dt = np.diff(x_values) / np.diff(t_values)
-   
-    return dx_dt.round(2) 
+    """
+    Calcula la velocidad, en base a la aceleración y los valores de tiempo
 
-"""
-Calcula la fuerza viscosa, en base a la aceleración, la masa de la persona y la masa de la bicicleta
+    Parametros:
+    x_values (array): Arreglo de valores de posición.
+    t_values (array): Arreglo de valores de tiempo.
 
-Parametros:
-ax (array): Arreglo de valores de aceleración.
-person_mass (float): Masa de la persona.
-bike_mass (float): Masa de la bicicleta.
+    Retorna:
+    array: Valores de velocidad
+    """
+    dx_dt = np.diff(x_values) / np.diff(t_values)  # La función diff() de numpy calcula la diferencia entre dos puntos sucesivos.
+    
+    return dx_dt.round(2)
 
-Retorna:
-array: Arreglo de valores de fuerza viscosa
-"""
-def calculate_viscous_force(ax,person_mass, bike_mass):
+def calculate_viscous_force(ax, person_mass, bike_mass):
+    """
+    Calcula la fuerza viscosa, en base a la aceleración, la masa de la persona y la masa de la bicicleta
+
+    Parametros:
+    ax (array): Arreglo de valores de aceleración.
+    person_mass (float): Masa de la persona.
+    bike_mass (float): Masa de la bicicleta.
+
+    Retorna:
+    array: Arreglo de valores de fuerza viscosa
+    """
     total_mass = person_mass + bike_mass
     
     return np.multiply(ax,total_mass).round(2)
 
-"""
-Escribe los datos en un archivo de texto.
-
-Parametros:
-file_path (str): La ruta del archivo, junto con el nombre.
-data (iterable): Los datos a escribir.
-"""
 def write_data_to_file(file_path, data):
+    """
+    Escribe los datos en un archivo de texto.
+
+    Parametros:
+    file_path (str): La ruta del archivo, junto con el nombre.
+    data (iterable): Los datos a escribir.
+    """
     with open(file_path,"w") as file:
         for item in data:
             file.write(f"{item},")    

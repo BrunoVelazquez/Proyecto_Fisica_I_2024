@@ -3,21 +3,53 @@ import matplotlib.pyplot as plt
 import cv2
 
 def calculate_aceleration(vx, vy, t_values):
+    """
+    Calcula los componentes de la aceleración según los valores de tiempo y velocidad
+
+    Parametros:
+    vx (array): Arreglo de velocidades en el eje x.
+    vy (array): Arreglo de velocidades en el eje y.
+    t_values (array): Arreglo de valores de tiempo.
+
+    Retorna:
+    tuple: Valores de aceleración en el eje x y en el eje y.
+    """
     ax = np.diff(vx) / np.diff(t_values)
     ay = np.diff(vy) / np.diff(t_values)
 
     return ax.round(2), ay.round(2)
 
 def calculate_velocity(x_values, y_values, t_values):
+    """
+    Calcula los componentes de la velocidad según los valores de tiempo y posición
+
+    Parametros:
+    x_values (array): Arreglo de pocisiones en el eje x.
+    y_values (array): Arreglos de pocisiones en el eje y.
+    t_values (array): Arreglo de valores de tiempo.
+
+    Retorna:
+    tuple: Valores de velocidad en el eje x y en el eje y.
+    """
     dx_dt = np.diff(x_values) / np.diff(t_values)
     dy_dt = np.diff(y_values) / np.diff(t_values)
 
     return dx_dt.round(2), dy_dt.round(2)
 
 def calculate_angular_aceleration(w_values, t_values):
+    """
+    Calcula la aceleración angular según la velocidad angular y los valores de tiempo.
+
+    Parametros:
+    w_values (array): Arreglo de valores de velocidad angular.
+    t_values (array): Arreglos de valores de tiempo.
+
+    Retorna:
+    array: Valores de aceleración angular.
+    """
     dw_dt = np.diff(w_values) / np.diff(t_values)
 
-    return dw_dt.round(2)    
+    return dw_dt.round(2)
 
 # Bucle para procesar cada video
 for i in range(1, 6):
