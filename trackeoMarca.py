@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import json
+from scipy.signal import savgol_filter
 
 def calculate_aceleration(vx, vy, t_values):
     """
@@ -122,9 +123,7 @@ for i in range(1, 6):
     print(len(velocidades_bici))
 
     # Calculamos la velocidad angular
-    velocidad_angular = [vx[i]+vy[i] - velocidades_bici[i] for i in range(len(vx))]
-
-    velocidad_angular = np.divide(velocidad_angular,0.7366)
+    velocidad_angular = [np.divide((np.sqrt(np.square(vx[i]-velocidades_bici[i])+np.square(vy[i]))),0.7366) for i in range(len(vx))]
 
 
     # Guardamos la velocidad angular en un archivo
@@ -174,6 +173,26 @@ for i in range(1, 6):
     plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)
     plt.show()
 
+
+    # Graficamos los datos de la velocidad angular y aceleración angular
+    velocidad_angular = savgol_filter(velocidad_angular, 30, 3)
+    aceleracion_angular = savgol_filter(aceleracion_angular, 30, 3)
+    fig, axs = plt.subplots(1, 2, figsize=(14, 10))
+    
+    axs[0].plot(t[1:], velocidad_angular)
+    axs[0].set_xlabel('tiempo')
+    axs[0].set_ylabel('omega')
+    axs[0].grid(True)
+    
+    axs[1].plot(t[2:], aceleracion_angular)
+    axs[1].set_xlabel('tiempo')
+    axs[1].set_ylabel('alpha')
+    axs[1].grid(True)
+    
+    plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)
+
+    plt.show()
+    
     #Convierto a pixeles para graficar
 
     vx = np.divide(vx,valor)
