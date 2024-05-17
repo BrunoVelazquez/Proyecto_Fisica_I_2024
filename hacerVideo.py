@@ -8,7 +8,13 @@ start_vid_index = 1
 end_vid_index = 6
 
 def generar_imagenes_vectorizadas(i, output_path):
- 
+    """
+    Genera imágenes de un video dado, con sus respectivos vectores de velocidad.
+
+    Parámetros:
+    i (int): índice del video a procesar.
+    output_path (str): ruta donde se guardarán las imágenes generadas.
+    """
     # Obtenemos los datos de las posiciones y velocidades
     posiciones_x = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionX_{i}.txt')
     posiciones_y = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionY_{i}.txt')
@@ -16,13 +22,13 @@ def generar_imagenes_vectorizadas(i, output_path):
     vx_marca = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadX_{i}.txt')
     vy_marca = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadY_{i}.txt')
     
-    # Extraigo del archivo los datos de conversion
+    # Extraemos los datos de conversión de la bicicleta y del marcador
     ruta_archivo = 'Conversiones\Pixeles_A_Metros.json'
     with open(ruta_archivo,"r") as archivo:
         datos = json.load(archivo)
         valor = float(datos[i-1]["valor"])
     
-    #Convierto a pixeles para graficar
+    # Convertimos a pixeles para graficar
     vx_marca = np.divide(vx_marca,valor)
     vy_marca = np.divide(vy_marca,valor)
     '''
@@ -34,8 +40,7 @@ def generar_imagenes_vectorizadas(i, output_path):
     posiciones_y = np.divide(posiciones_y,valor)
     velocidades_bici = np.divide(velocidades_bici,valor)
 
-
-    # Leer video frame a frame y graficar vectores
+    # Leemos el video frame a frame y graficamos vectores
     cap = cv2.VideoCapture(f'vid{i}.mov')
     frame_count = 0
     x = 0
@@ -45,7 +50,7 @@ def generar_imagenes_vectorizadas(i, output_path):
         if not ret:
             break
 
-        # Graficar vectores en la imagen
+        # Graficamos vectores en la imagen
         if frame_count >= 1:
             cv2.imwrite(f'{output_path}\\imagen{frame_count}.jpg', frame)
             imagen = cv2.imread(f'{output_path}\\imagen{frame_count}.jpg')
@@ -64,12 +69,25 @@ def generar_imagenes_vectorizadas(i, output_path):
     cap.release()
 
 def obtener_datos(archivo_absoluto):
+    """
+    Obtiene los datos de un archivo de texto, donde cada línea es una lista de números separados por comas.
+
+    Args:
+    - archivo_absoluto (str): Ruta del archivo de texto.
+
+    Returns:
+    - Una lista de números de punto flotante.
+    """
+    # Abrimos el archivo de texto y leemos la línea
     with open(archivo_absoluto, 'r') as f:
         numeros = f.readline().split(',')
-        # Verificar si el último elemento es una cadena vacía
+
+        # Verificamos si el último elemento es una cadena vacía
         if numeros[-1] == '':
-            # Eliminar el último elemento si es una cadena vacía
+            # Eliminamos el último elemento si es una cadena vacía
             numeros = numeros[:-1]
+
+        # Convertimos cada número a punto flotante y lo devolvemos
         return [float(numero) for numero in numeros]
     
 def obtener_imagenes_del_directorio(directorio, extension='.jpg'):
