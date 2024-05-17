@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import json
 
 def calculate_aceleration(vx, vy, t_values):
     """
@@ -75,20 +76,11 @@ for i in range(1, 6):
         numeros = f.readline().split(',')
         velocidades_bici = [float(numero.strip()) for numero in numeros]
 
-
-    if i == 1:
-        valor = 0.00897381812634432
-    else:
-        if i == 2:
-            valor = 0.008110213653567056
-        else:
-            if i == 3:
-                valor = 0.00780340688235733
-            else:
-                if i == 4:
-                    valor = 0.008445287789158155
-                else:
-                    valor = 0.006923984374912447 
+    # Extraigo del archivo los datos de conversion
+    ruta_archivo = 'Conversiones\Pixeles_A_Metros.json'
+    with open(ruta_archivo,"r") as archivo:
+        datos = json.load(archivo)
+        valor = float(datos[i-1]["valor"])
 
     # Convertimos las posiciones x e y a metros
     posiciones_x = np.multiply(posiciones_x, valor)
@@ -206,28 +198,15 @@ for i in range(1, 6):
 
 
         # Graficar vectores en la imagen
-        if frame_count == 0:
-            print()
-        else:
-            if frame_count == 1:
-                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\\imagen{frame_count}.jpg', frame)
-                imagen = cv2.imread(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg')
-                punto_origen = (int(posiciones_x[1]), int(posiciones_y[1]))
-                punto_destino = (punto_origen[0]+int(vx[z])-int(velocidades_bici[z]), punto_origen[1]+int(vy[z]))
-                imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
-                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
-                #cv2.imshow('Imagen con vector', imagen_con_vector)
-                cv2.waitKey(0)
-                z = z + 1
-            else:
-                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\\imagen{frame_count}.jpg', frame)
-                imagen = cv2.imread(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg')
-                punto_origen = (int(posiciones_x[x]), int(posiciones_y[x]))
-                punto_destino = (punto_origen[0]+int(vx[z])-int(velocidades_bici[z]), punto_origen[1]+int(vy[z]))
-                imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
-                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
-                z = z + 1
-                y = y + 1
+        if frame_count >= 1:
+            cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\\imagen{frame_count}.jpg', frame)
+            imagen = cv2.imread(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg')
+            punto_origen = (int(posiciones_x[x]), int(posiciones_y[x]))
+            punto_destino = (punto_origen[0]+int(vx[z])-int(velocidades_bici[z]), punto_origen[1]+int(vy[z]))
+            imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
+            cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
+            z = z + 1
+            y = y + 1
 
         frame_count += 1
         x = x + 1
