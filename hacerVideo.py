@@ -5,9 +5,9 @@ import json
 
 # Parámetros configurables:
 start_vid_index = 1
-end_vid_index = 4
+end_vid_index = 6
 
-def generar_imagenes_vectorizadas(i, video_path, output_path):
+def generar_imagenes_vectorizadas(i, output_path):
  
     # Obtenemos los datos de las posiciones y velocidades
     posiciones_x = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionX_{i}.txt')
@@ -47,15 +47,15 @@ def generar_imagenes_vectorizadas(i, video_path, output_path):
 
         # Graficar vectores en la imagen
         if frame_count >= 1:
-            cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\\imagen{frame_count}.jpg', frame)
-            imagen = cv2.imread(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg')
+            cv2.imwrite(f'{output_path}\\imagen{frame_count}.jpg', frame)
+            imagen = cv2.imread(f'{output_path}\\imagen{frame_count}.jpg')
             punto_origen = (int(posiciones_x[x]), int(posiciones_y[x]))
             punto_destino = (
                 punto_origen[0]+int(vx_marca[z])-int(velocidades_bici[z]),
                 punto_origen[1]+int(vy_marca[z])
             )
             imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
-            cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
+            cv2.imwrite(f'{output_path}\\imagen{frame_count}.jpg', imagen_con_vector)
             z = z + 1
 
         frame_count += 1
@@ -122,8 +122,8 @@ def eliminar_imagenes(imagenes):
 for i in range(start_vid_index, end_vid_index):
     
     print(f'Procesando imagenes vectorizadas de video {i}')
-    generar_imagenes_vectorizadas(i, f'vid{i}.mov', f'Vectores_En_Videos\\Video{i}\\')
-    directorio_imagenes = f'Vectores_En_Videos\\Video{i}\\'
+    generar_imagenes_vectorizadas(i, f'Vectores_En_Videos\\Video{i}')
+    directorio_imagenes = f'Vectores_En_Videos\\Video{i}'
     imagenes = obtener_imagenes_del_directorio(directorio_imagenes)
     nombre_video = f'Video_{i}_Vector_Velocidad.mov'
     
