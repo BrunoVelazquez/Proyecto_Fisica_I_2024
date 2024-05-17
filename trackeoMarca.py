@@ -190,6 +190,7 @@ for i in range(1, 6):
     ay = np.divide(ay,valor)
     posiciones_x = np.divide(posiciones_x,valor)
     posiciones_y = np.divide(posiciones_y,valor)
+    velocidades_bici = np.divide(velocidades_bici,valor)
 
 
     # Leer video frame a frame y graficar vectores
@@ -209,20 +210,22 @@ for i in range(1, 6):
             print()
         else:
             if frame_count == 1:
-                color = (0, 255, 0)
-                cv2.imwrite(f'Vectores\\Video{i}\\\imagen{frame_count}.jpg', frame)
-                imagen = cv2.imread(f'Vectores\\Video{i}\\imagen{frame_count}.jpg')
-                imagen_con_vector = cv2.arrowedLine(imagen, (int(posiciones_x[1]), int(posiciones_y[1])), (int(vx[z]), int(vy[z])), color, thickness=2)
-                cv2.imwrite(f'Vectores\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
+                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\\imagen{frame_count}.jpg', frame)
+                imagen = cv2.imread(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg')
+                punto_origen = (int(posiciones_x[1]), int(posiciones_y[1]))
+                punto_destino = (punto_origen[0]+int(vx[z])-int(velocidades_bici[z]), punto_origen[1]+int(vy[z]))
+                imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
+                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
                 #cv2.imshow('Imagen con vector', imagen_con_vector)
                 cv2.waitKey(0)
                 z = z + 1
             else:
-                color = (0, 255, 0)
-                cv2.imwrite(f'Vectores\\Video{i}\\\imagen{frame_count}.jpg', frame)
-                imagen = cv2.imread(f'Vectores\\Video{i}\\imagen{frame_count}.jpg')
-                imagen_con_vector = cv2.arrowedLine(imagen, (int(posiciones_x[x]), int(posiciones_y[x])), (int(vx[z]), int(vy[z])), color, thickness=2)
-                cv2.imwrite(f'Vectores\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
+                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\\imagen{frame_count}.jpg', frame)
+                imagen = cv2.imread(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg')
+                punto_origen = (int(posiciones_x[x]), int(posiciones_y[x]))
+                punto_destino = (punto_origen[0]+int(vx[z])-int(velocidades_bici[z]), punto_origen[1]+int(vy[z]))
+                imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
+                cv2.imwrite(f'Vectores_En_Videos\\Video{i}\\imagen{frame_count}.jpg', imagen_con_vector)
                 z = z + 1
                 y = y + 1
 
