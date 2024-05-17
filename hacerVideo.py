@@ -6,7 +6,7 @@ start_vid_index = 1
 end_vid_index = 4
 
 # Ruta donde están las imágenes
-ruta = "Vectores\\Video1\\"
+ruta = "Vectores_En_Videos\\Video1\\"
 
 for i in range(start_vid_index, end_vid_index):
     # Obtener lista de nombres de archivo de las imágenes
@@ -21,6 +21,7 @@ for i in range(start_vid_index, end_vid_index):
     height, width, channels = frame.shape
 
     # Nombre de archivo de salida
+    prefix = f'Video_vectorizado_{i}'
     output = f'{prefix}.mov'
 
     # Crear el objeto VideoWriter
