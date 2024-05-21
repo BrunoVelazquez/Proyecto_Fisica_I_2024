@@ -181,28 +181,28 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     
 
     axs2[0,0].plot(t, x1)
-    axs2[0,0].set_xlabel('tiempo')
-    axs2[0,0].set_ylabel('$p_{x}$')
+    axs2[0,0].set_xlabel('tiempo (s)')
+    axs2[0,0].set_ylabel('$p_{x} (m)$')
     axs2[0,0].grid(True)
 
     axs2[0,1].plot(t[1:], vx5)
-    axs2[0,1].set_xlabel('tiempo')
-    axs2[0,1].set_ylabel('$v_{x}$')
+    axs2[0,1].set_xlabel('tiempo (s)')
+    axs2[0,1].set_ylabel('$v_{x} (m/s)$')
     axs2[0,1].grid(True)
 
     axs2[1,0].plot(t[2:], ax4)
-    axs2[1,0].set_xlabel('tiempo')
-    axs2[1,0].set_ylabel('$a_{x}$')
+    axs2[1,0].set_xlabel('tiempo (s)')
+    axs2[1,0].set_ylabel('$a_{x} (m/s2)$')
     axs2[1,0].grid(True)
 
     axs2[1,1].plot(t[2:],viscous_force2)
-    axs2[1,1].set_xlabel('tiempo')
-    axs2[1,1].set_ylabel('fuerza_viscosa')
+    axs2[1,1].set_xlabel('tiempo (s)')
+    axs2[1,1].set_ylabel('fuerza_viscosa (N)')
     axs2[1,1].grid(True)
 
     axs2[2,0].plot(vx5[1:], viscous_force2)
-    axs2[2,0].set_xlabel('velocidad')
-    axs2[2,0].set_ylabel('fuerza_viscosa')
+    axs2[2,0].set_xlabel('velocidad (m/s)')
+    axs2[2,0].set_ylabel('fuerza_viscosa (N)')
     axs2[2,0].grid(True)
 
     plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)
