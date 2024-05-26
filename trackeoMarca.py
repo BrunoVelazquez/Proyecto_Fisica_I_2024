@@ -142,32 +142,32 @@ for i in range(1, 6):
 
     axs[0, 0].plot(t, posiciones_x)
     axs[0, 0].set_xlabel('tiempo (s)')
-    axs[0, 0].set_ylabel('$p_{x} (m)$')
+    axs[0, 0].set_ylabel('$x (m)$')
     axs[0, 0].grid(True)
 
     axs[0, 1].plot(t, posiciones_y)
     axs[0, 1].set_xlabel('tiempo (s)')
-    axs[0, 1].set_ylabel('$p_{y} (m/s)$')
+    axs[0, 1].set_ylabel('$y (m)$')
     axs[0, 1].grid(True)
 
     axs[1, 0].plot(t[1:], vx)
     axs[1, 0].set_xlabel('tiempo (s)')
-    axs[1, 0].set_ylabel('$v_{x} (m/s2)$')
+    axs[1, 0].set_ylabel('$v_{x} (m/s)$')
     axs[1, 0].grid(True)
 
     axs[1, 1].plot(t[1:], vy)
     axs[1, 1].set_xlabel('tiempo (s)')
-    axs[1, 1].set_ylabel('$v_{y} (m/s2)$')
+    axs[1, 1].set_ylabel('$v_{y} (m/s)$')
     axs[1, 1].grid(True)
 
     axs[2, 0].plot(t[2:], ax)
     axs[2, 0].set_xlabel('tiempo (s)')
-    axs[2, 0].set_ylabel('$a_{x} (m/s2)$')
+    axs[2, 0].set_ylabel('$a_{x} (m/s^2)$')
     axs[2, 0].grid(True)
 
     axs[2, 1].plot(t[2:], ay)
     axs[2, 1].set_xlabel('tiempo (s)')
-    axs[2, 1].set_ylabel('$a_{y} (m/s2)$')
+    axs[2, 1].set_ylabel('$a_{y} (m/s^2)$')
     axs[2, 1].grid(True)
 
     plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)
