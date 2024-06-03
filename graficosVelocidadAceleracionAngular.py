@@ -3,6 +3,21 @@ import matplotlib.pyplot as plt
 import cv2
 from scipy.signal import savgol_filter
 
+def calculate_angular_aceleration(w_values, t_values):
+    """
+    Calcula la aceleración angular según la velocidad angular y los valores de tiempo.
+
+    Parametros:
+    w_values (array): Arreglo de valores de velocidad angular.
+    t_values (array): Arreglos de valores de tiempo.
+
+    Retorna:
+    array: Valores de aceleración angular.
+    """
+    dw_dt = np.diff(w_values) / np.diff(t_values)
+
+    return dw_dt.round(2)
+
 
 # Configuración del estilo
 plt.style.use("dark_background")
@@ -56,7 +71,16 @@ for i in range(1, 6):
 
    
     velocidad_angular_suavizada = savgol_filter(velocidades_angulares,len(velocidades_angulares),3)
-    aceleracion_angular_suavizada = savgol_filter(aceleraciones_angulares,len(aceleraciones_angulares),3)
+    aceleraciones_angulares = calculate_angular_aceleration(velocidad_angular_suavizada,t[1:])
+    aceleraciones_angulares = savgol_filter(aceleraciones_angulares,len(aceleraciones_angulares),3)
+    
+    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidades_angulares_{i}.txt', "w") as file:
+        for item in velocidad_angular_suavizada:
+            file.write(f"{item.round(2)}\n") 
+
+    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\aceleraciones_angulares_{i}.txt', "w") as file:
+        for item in aceleraciones_angulares:
+            file.write(f"{item.round(2)}\n") 
 
     fig, axs = plt.subplots(2, 1, figsize=(14, 10))
     # Gráfico 1
@@ -68,7 +92,7 @@ for i in range(1, 6):
     axs[0].grid(True)
 
     # Gráfico 2
-    plot_with_shades(axs[1], t[2:], aceleracion_angular_suavizada, colors[3])
+    plot_with_shades(axs[1], t[2:], aceleraciones_angulares, colors[3])
     axs[1].set_title('Aceleración Angular')
     axs[1].set_xlabel('Tiempo(s)')
     axs[1].set_ylabel('$α (rad/s^2)$')

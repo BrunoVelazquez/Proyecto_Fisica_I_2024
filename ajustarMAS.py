@@ -4,20 +4,26 @@ import matplotlib.pyplot as plt
 
 # Cargar datos desde el archivo
 A_data = []
+t_data = []
+
 with open('Datos_Extraidos_Marca/Datos_Video_1/velocidadY_1.txt', 'r') as f:
     numeros = f.readline().split(',')
     A_data = [float(numero.strip()) for numero in numeros]
 
-# Generar los tiempos correspondientes a los datos
-t_data = np.linspace(0, 10, num=len(A_data))  # tiempos
+with open(f'Datos_Extraidos_Bici\\Datos_Video_1\\tiempo_1.txt', 'r') as f:
+        numeros = f.readline().split(',')
+        t_data = [float(numero.strip()) for numero in numeros]   
+
+t_data = np.array(t_data[1:])
 
 # Define la función V(t)
 def V(t, A, s, w, phi):
     return A * np.exp(-t * s) * np.cos(w * t + phi)
 
+
 # Ajuste de la curva
 # Utiliza curve_fit para encontrar los mejores parámetros
-popt, pcov = curve_fit(V, t_data, A_data)
+popt, pcov = curve_fit(V, t_data, A_data, p0=[3, 0.5, 1.5, 0])
 
 # popt contiene los valores óptimos para A, s, w y phi
 A_opt, s_opt, w_opt, phi_opt = popt
