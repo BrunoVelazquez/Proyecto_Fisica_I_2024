@@ -90,12 +90,18 @@ for i in range(1, 6):
 
     energia_cinetica_rotacion = np.multiply(producto_parcial,0.5)
 
+    #La bicicleta tiene dos ruedas por lo tanto tiene el doble de energia cinetica de rotacion de una rueda
+    energia_cinetica_rotacion = np.add(energia_cinetica_rotacion,energia_cinetica_rotacion)
+
     energia_cinetica_total = np.add(energia_cinetica_traslacion, energia_cinetica_rotacion)
-    
+
     #Calculo de trabajo como variacion de la energia cinetica para cada caso
-    trabajo_rotacion = calculate_work_deltaEc(energia_cinetica_rotacion)
+    trabajo_rotacion = calculate_work_deltaEc(energia_cinetica_rotacion[::4])
     trabajo_traslacion = calculate_work_deltaEc(energia_cinetica_traslacion)
     trabajo_total = calculate_work_deltaEc(energia_cinetica_total)
+
+    trabajo_total = savgol_filter(trabajo_total,len(trabajo_total),3)
+    trabajo_rotacion = savgol_filter(trabajo_rotacion,len(trabajo_rotacion),3)
 
     """
     posiciones_bici = np.diff(posiciones_bici)
@@ -147,7 +153,10 @@ for i in range(1, 6):
 
     #Calculo de potencia como variacion del trabajo con respecto al tiempo para cada caso
     potencia_traslacion = calculate_power(trabajo_traslacion,tiempo[2:])
-    potencia_rotacion = calculate_power(trabajo_rotacion,tiempo[2:])
+    
+    tiempo_2 = tiempo[::4]
+
+    potencia_rotacion = calculate_power(trabajo_rotacion,tiempo_2[1:])
     potencia_total = calculate_power(trabajo_total,tiempo[2:])
     #potencia_fd = calculate_power(trabajo_fd,tiempo[2:])
 
@@ -176,8 +185,9 @@ for i in range(1, 6):
     axs[0, 0].set_ylabel('$Ec_rot (J)$')
     axs[0, 0].grid(color='#2A3459')
 
+    tiempo_3 = tiempo[::4]
     # Gráfico 2
-    plot_with_shades(axs[0, 1], tiempo[2:], trabajo_rotacion, colors[1])
+    plot_with_shades(axs[0, 1], tiempo_3[1:], trabajo_rotacion, colors[1])
     axs[0, 1].set_title('Trabajo de Rotación')
     axs[0, 1].set_xlabel('Tiempo (s)')
     axs[0, 1].set_ylabel('$W_rot (J)$')
@@ -185,7 +195,7 @@ for i in range(1, 6):
     axs[0, 1].set_ylim([min(trabajo_rotacion)-0.01, max(trabajo_rotacion)+0.01])
 
     # Gráfico 3
-    plot_with_shades(axs[0, 2], tiempo[3:], potencia_rotacion, colors[2])
+    plot_with_shades(axs[0, 2], tiempo_2[2:], potencia_rotacion, colors[2])
     axs[0, 2].set_title('Potencia de Rotación')
     axs[0, 2].set_xlabel('Tiempo (s)')
     axs[0, 2].set_ylabel('$P_rot (Watt)$')
