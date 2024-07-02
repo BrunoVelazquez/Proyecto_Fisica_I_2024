@@ -2,6 +2,7 @@ import cv2
 import os
 import numpy as np
 import json
+import pandas as pd
 
 # Parámetros configurables:
 start_vid_index = 1
@@ -18,7 +19,7 @@ def generar_imagenes_vectorizadas(i, output_path):
     # Obtenemos los datos de las posiciones y velocidades
     posiciones_x = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionX_{i}.txt')
     posiciones_y = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionY_{i}.txt')
-    velocidades_bici = obtener_datos(f'Datos_Extraidos_Bici\\Datos_Video_{i}\\velocidad_{i}.txt')
+    velocidades_bici = pd.read_csv(f'Datos_Extraidos_Bici\\datos_bici_video_{i}.csv')['velocidad']
     vx_marca = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadX_{i}.txt')
     vy_marca = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadY_{i}.txt')
     

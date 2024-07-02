@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import pandas as pd
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
 import json
@@ -100,7 +101,6 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
 
     cap = cv2.VideoCapture(video_path)
     cantidad_frames = 0
-    cuadros = []
 
     tracked = cv2.TrackerCSRT_create()
     #tracked = cv2.legacy.TrackerMOSSE_create() #Mas rapido, lo usamos para pruebas
@@ -144,7 +144,7 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
 
 
 
-    dir_base = f'Datos_Extraidos_Bici\Datos_Video_{id}'
+    dir_base = f'Datos_Extraidos_Bici\\'
 
 
     # Para calcular el tiempo_final(duracion del video) al saber que el celular graba a 30 FPS divido
@@ -152,8 +152,6 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     tiempo_final = cantidad_frames / 30
     t = np.linspace(0,tiempo_final,len(posiciones_x))
 
-    print(t)
-    print()
     print(f"El tiempo final es {tiempo_final}")
     #Calculo las componentes x del vector velocidad y del vector aceleracion
     vx = calculate_velocity(list(posiciones_x),t)
@@ -208,29 +206,17 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)
     plt.show()
 
-     # Rutas de los archivos
-    file_path_posiciones = f'{dir_base}\\posicion_{id}.txt'
-    file_path_velocidad = f'{dir_base}\\velocidad_{id}.txt'
-    file_path_aceleracion = f'{dir_base}\\aceleracion_{id}.txt'
-    file_path_fuerza_viscosa = f'{dir_base}\\fuerza_viscosa_{id}.txt'
-    file_path_tiempo = f'{dir_base}\\tiempo_{id}.txt'
-
-    # Escribir en los archivos
-    with open(file_path_posiciones, "w") as file:
-        for item in x1:
-            file.write(f"{item.round(2)},")
-    with open(file_path_velocidad, "w") as file:
-        for item in vx5:
-            file.write(f"{item},")
-    with open(file_path_aceleracion, "w") as file:
-        for item in ax4:
-            file.write(f"{item},")
-    with open(file_path_tiempo, "w") as file:
-        for item in t:
-            file.write(f"{item},")        
-    with open(file_path_fuerza_viscosa, "w") as file:
-        for item in viscous_force2:
-            file.write(f"{item},")
+    maxlength = max(len(t), len(x1), len(vx5), len(ax4), len(viscous_force2))
+    # Rellenar espacios faltantes
+    df = pd.DataFrame({
+        'tiempo': np.append(t, [t[-1]] * (maxlength - len(t))),
+        'posicion': np.append(x1, [x1[-1]] * (maxlength - len(x1))),
+        'velocidad': np.append(vx5, [vx5[-1]] * (maxlength - len(vx5))),
+        'aceleracion': np.append(ax4, [ax4[-1]] * (maxlength - len(ax4))),
+        'fuerza_viscosa': np.append(viscous_force2, [viscous_force2[-1]] * (maxlength - len(viscous_force2))),
+    })
+    
+    df.to_csv(f'{dir_base}\\datos_bici_video_{id}.csv', index=False)
 
 
 videos = [DIR + FILE1, DIR + FILE2, DIR + FILE3, DIR + FILE4, DIR + FILE5]

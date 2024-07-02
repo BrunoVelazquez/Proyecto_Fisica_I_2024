@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Configuración del estilo
 plt.style.use("dark_background")
@@ -30,32 +31,13 @@ def plot_with_shades(ax, x, y, color):
     ax.fill_between(x, y, y2=[min_value]*len(x), color=color, alpha=0.1)
 
 for i in range(1, 6):
-    t = []
-    x = []
-    vx = []
-    ax = []
-    viscous_force = []
+    df = pd.read_csv(f'Datos_Extraidos_Bici/datos_bici_video_{i}.csv')
+    t = df['tiempo']
+    x = df['posicion']
+    vx = df['velocidad']
+    ax = df['aceleracion']
+    viscous_force = df['fuerza_viscosa']
     
-    with open(f'Datos_Extraidos_Bici/Datos_Video_{i}/posicion_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        x = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Bici/Datos_Video_{i}/velocidad_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        vx = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Bici/Datos_Video_{i}/aceleracion_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        ax = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Bici/Datos_Video_{i}/tiempo_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        t = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Bici/Datos_Video_{i}/fuerza_viscosa_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        viscous_force = [float(numero.strip()) for numero in numeros]
-
     fig, axs = plt.subplots(3, 2, figsize=(14, 10))
 
     # Gráfico 1
@@ -68,7 +50,7 @@ for i in range(1, 6):
     axs[0, 0].set_ylim([min(x), max(x)])
 
     # Gráfico 2
-    plot_with_shades(axs[0, 1], t[1:], vx, colors[1])
+    plot_with_shades(axs[0, 1], t, vx, colors[1])
     axs[0, 1].set_title('Velocidad en eje X')
     axs[0, 1].set_xlabel('Tiempo(s)')
     axs[0, 1].set_ylabel('$v_{x} (m/s)$')
@@ -77,7 +59,7 @@ for i in range(1, 6):
     axs[0, 1].set_ylim([min(vx), max(vx)])
 
     # Gráfico 3
-    plot_with_shades(axs[1, 0], t[2:], ax, colors[2])
+    plot_with_shades(axs[1, 0], t, ax, colors[2])
     axs[1, 0].set_title('Aceleración en eje X')
     axs[1, 0].set_xlabel('Tiempo(s)')
     axs[1, 0].set_ylabel('$a_{x} (m/s^2)$')
@@ -86,7 +68,7 @@ for i in range(1, 6):
     axs[1, 0].set_ylim([min(ax), max(ax)])
 
     # Gráfico 4
-    plot_with_shades(axs[1, 1], t[2:], viscous_force, colors[3])
+    plot_with_shades(axs[1, 1], t, viscous_force, colors[3])
     axs[1, 1].set_title('Fuerza viscosa')
     axs[1, 1].set_xlabel('Tiempo(s)')
     axs[1, 1].set_ylabel('$F_{v} (N)$')
@@ -95,7 +77,7 @@ for i in range(1, 6):
     axs[1, 1].set_ylim([min(viscous_force), max(viscous_force)])
 
     # Gráfico 5
-    plot_with_shades(axs[2, 0], vx[1:], viscous_force, colors[4])
+    plot_with_shades(axs[2, 0], vx, viscous_force, colors[4])
     axs[2, 0].set_title('Fuerza viscosa en función de la velocidad')
     axs[2, 0].set_xlabel('$v_{x} (m/s)$')
     axs[2, 0].set_ylabel('$F_{v} (N)$')

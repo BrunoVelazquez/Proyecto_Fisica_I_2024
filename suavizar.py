@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import pandas as pd
 from scipy.signal import savgol_filter
 
 
@@ -36,44 +37,15 @@ def plot_with_shades(ax, x, y, color):
 
 
 for i in range(1, 6):
-    t = []
-    x = []
-    y = []
-    vx = []
-    vy = []
-    ax = []
-    ay = []
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\datosRuedaX_{i}.txt', 'r') as f:
-            for linea in f:
-                partes = linea.split()
-                t.append(float(partes[0].replace(',', '.')))
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionX_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            x = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionY_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            y = [float(numero.strip()) for numero in numeros]       
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadX_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            vx = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadY_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            vy = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\aceleracionX_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            ax = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\aceleracionY_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            ay = [float(numero.strip()) for numero in numeros]               
-
-   
+    df_marca = pd.read_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv')
+    t = df_marca['tiempo']
+    x = df_marca['posicion_x']
+    y = df_marca['posicion_y']
+    vx = df_marca['velocidad_x']
+    vy = df_marca['velocidad_y']
+    ax = df_marca['aceleracion_x']
+    ay = df_marca['aceleracion_y']
+    
     ax2 = savgol_filter(ax,len(ax),0)
     ay2 = savgol_filter(ay,11,4)
     
@@ -94,25 +66,25 @@ for i in range(1, 6):
     axs[0, 1].set_xlim([min(t), max(t)])
     axs[0, 1].set_ylim([min(y), max(y)])
 
-    plot_with_shades(axs[1,0], t[1:], vx, colors[2])
+    plot_with_shades(axs[1,0], t, vx, colors[2])
     axs[1, 0].set_xlabel('tiempo (s)')
     axs[1, 0].set_ylabel('$v_{x} (m/s)$')
     axs[1, 0].grid(True)
     axs[1, 0].grid(color='#2A3459')
 
-    plot_with_shades(axs[1,1], t[1:], vy, colors[3])
+    plot_with_shades(axs[1,1], t, vy, colors[3])
     axs[1, 1].set_xlabel('tiempo (s)')
     axs[1, 1].set_ylabel('$v_{y} (m/s)$')
     axs[1, 1].grid(True)
     axs[1, 1].grid(color='#2A3459')
 
-    plot_with_shades(axs[2,0], t[2:], ax2, colors[4])
+    plot_with_shades(axs[2,0], t, ax2, colors[4])
     axs[2, 0].set_xlabel('tiempo (s)')
     axs[2, 0].set_ylabel('$a_{x} (m/s^2)$')
     axs[2, 0].grid(True)
     axs[2, 0].grid(color='#2A3459')
 
-    plot_with_shades(axs[2,1], t[2:], ay2, colors[5])
+    plot_with_shades(axs[2,1], t, ay2, colors[5])
     axs[2, 1].set_xlabel('tiempo (s)')
     axs[2, 1].set_ylabel('$a_{y} (m/s^2)$')
     axs[2, 1].grid(True)
