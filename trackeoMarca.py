@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import cv2
 import json
 import pandas as pd
+from utils import fill
 from scipy.signal import savgol_filter
 
 def calculate_aceleration(vx, vy, t_values):
@@ -80,10 +81,10 @@ for i in range(1, 6):
     ax, ay = calculate_aceleration(vx, vy, t[1:])
 
     maxlength = max(len(posiciones_x), len(posiciones_y), len(vx), len(vy), len(ax), len(ay))
-    vx = np.append(vx, [vx[-1]]*(maxlength - len(vx)))
-    vy = np.append(vy, [vy[-1]]*(maxlength - len(vy)))
-    ax = np.append(ax, [ax[-1]]*(maxlength - len(ax)))
-    ay = np.append(ay, [ay[-1]]*(maxlength - len(ay)))
+    vx = fill(vx, maxlength)
+    vy = fill(vy, maxlength)
+    ax = fill(ax, maxlength)
+    ay = fill(ay, maxlength)
     
     df_marca['posicion_x'] = posiciones_x
     df_marca['posicion_y'] = posiciones_y
@@ -97,7 +98,7 @@ for i in range(1, 6):
     aceleracion_angular = calculate_angular_aceleration(velocidad_angular,t)
 
     df_marca['velocidad_angular'] = velocidad_angular
-    df_marca['aceleracion_angular'] = np.append(aceleracion_angular, [aceleracion_angular[-1]]*(maxlength - len(aceleracion_angular)))
+    df_marca['aceleracion_angular'] = fill(aceleracion_angular, maxlength)
     
     df_marca.to_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv', index=False)
     # # Graficamos los datos

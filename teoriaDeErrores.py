@@ -34,11 +34,15 @@ for i in range(1, 6):
     mse_vy = mean_squared_error(vy, señal_filtrada_vy)
 
     df_errores = pd.DataFrame({
-        'x': [mae_x, mse_x],
-        'y': [mae_y, mse_y],
-        'vx': [mae_vx, mse_vx],
-        'vy': [mae_vy, mse_vy]
-    })
+        'mae_x': mae_x,
+        'mse_x': mse_x,
+        'mae_y': mae_y,
+        'mse_y': mse_y,
+        'mae_vx': mae_vx,
+        'mse_vx': mse_vx,
+        'mae_vy': mae_vy,
+        'mse_vy': mse_vy,
+    }, index=[0])
     
     # Escribir resultados en archivos
     df_errores.to_csv(f'Teoria_De_Errores\\errores_video_{i}.csv', index=False)

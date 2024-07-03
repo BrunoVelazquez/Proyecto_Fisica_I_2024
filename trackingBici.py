@@ -4,6 +4,7 @@ import pandas as pd
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
 import json
+from utils import fill
 
 DIR = ''
 FILE1 = 'vid1.mov'
@@ -102,8 +103,8 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     cap = cv2.VideoCapture(video_path)
     cantidad_frames = 0
 
-    tracked = cv2.TrackerCSRT_create()
-    #tracked = cv2.legacy.TrackerMOSSE_create() #Mas rapido, lo usamos para pruebas
+    #tracked = cv2.TrackerCSRT_create()
+    tracked = cv2.legacy.TrackerMOSSE_create() #Mas rapido, lo usamos para pruebas
     success, img = cap.read()
 
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))    
@@ -209,11 +210,11 @@ def process_video(id, video_path,posiciones_x, vx, ax, viscous_force):
     maxlength = max(len(t), len(x1), len(vx5), len(ax4), len(viscous_force2))
     # Rellenar espacios faltantes
     df = pd.DataFrame({
-        'tiempo': np.append(t, [t[-1]] * (maxlength - len(t))),
-        'posicion': np.append(x1, [x1[-1]] * (maxlength - len(x1))),
-        'velocidad': np.append(vx5, [vx5[-1]] * (maxlength - len(vx5))),
-        'aceleracion': np.append(ax4, [ax4[-1]] * (maxlength - len(ax4))),
-        'fuerza_viscosa': np.append(viscous_force2, [viscous_force2[-1]] * (maxlength - len(viscous_force2))),
+        'tiempo': fill(t, maxlength),
+        'posicion': fill(x1, maxlength),
+        'velocidad': fill(vx5, maxlength),
+        'aceleracion': fill(ax4, maxlength),
+        'fuerza_viscosa': fill(viscous_force2, maxlength),
     })
     
     df.to_csv(f'{dir_base}\\datos_bici_video_{id}.csv', index=False)
