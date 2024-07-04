@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
+import pandas as pd
 
 # Configuración del estilo
 plt.style.use("dark_background")
@@ -34,9 +35,11 @@ def plot_with_shades(ax, x, y, color):
 todos_valores = []
 
 for i in range(1,6):
+    df_bici = pd.read_csv(f'Datos_Extraidos_Bici/datos_bici_video_{i}.csv')
+    df_marca = pd.read_csv(f'Datos_Extraidos_Marca/datos_marca_video_{i}.csv')
     torque = []
-    velocidad_angular = []
-    t = []
+    velocidad_angular = df_marca['velocidad_angular'].to_numpy()
+    t = df_bici['tiempo']
 
     # Abrir el archivo en modo lectura
     with open(f'Torque\\torque_{i}.txt', 'r') as file:
@@ -46,25 +49,17 @@ for i in range(1,6):
             for valor in valores_linea:
                 torque.append(float(valor))
 
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidades_angulares_{i}.txt', 'r') as f:
-            for linea in f:
-                    valor = linea.strip()
-                    velocidad_angular.append(float(valor))
-
-    with open(f'Datos_Extraidos_Bici/Datos_Video_{i}/tiempo_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        t = [float(numero.strip()) for numero in numeros]
-
     # Calcular velocidad angular del plato con la relación de transmisión
     velocidades_angulares_plato = np.multiply(velocidad_angular, 20)
     velocidades_angulares_plato = np.divide(velocidades_angulares_plato, 44)
 
     torque = np.multiply(torque,-1)
-    potencia_entregada = np.multiply(torque,velocidades_angulares_plato[1:])
+    potencia_entregada = np.multiply(torque,velocidades_angulares_plato[2:])
 
-    with open(f'Potencia_Entregada\\potencia_entregada_{i}.txt', "w") as file:
-        for item in potencia_entregada:
-            file.write(f"{item.round(2)}\n")
+    df_potencia = pd.DataFrame({
+        'potencia_entregada': potencia_entregada
+    })
+    df_potencia.to_csv(f'Potencia_Entregada\\potencia_entregada_{i}.csv', index=False)
 
     #fig, axs = plt.subplots(3, 3, figsize=(14, 10))
     #plt.figure(figsize=(8, 6))

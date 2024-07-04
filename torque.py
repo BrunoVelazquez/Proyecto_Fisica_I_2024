@@ -51,7 +51,7 @@ for i in range(1, 6):
 
     # Graficar torque en función del tiempo para cada video
     plt.figure(figsize=(8, 6))
-    # plot_with_shades(plt.gca(), t[:len(torque)], torque, colors[1])
+    plot_with_shades(plt.gca(), t[:len(torque)], torque, colors[1])
     plt.title(f'Torque en función del tiempo - Video {i}')
     plt.xlabel('Tiempo (s)')
     plt.ylabel('Torque (Nm)')

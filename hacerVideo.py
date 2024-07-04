@@ -6,7 +6,7 @@ import pandas as pd
 
 # Parámetros configurables:
 start_vid_index = 1
-end_vid_index = 6
+end_vid_index = 2
 
 def generar_imagenes_vectorizadas(i, output_path):
     """
@@ -17,11 +17,13 @@ def generar_imagenes_vectorizadas(i, output_path):
     output_path (str): ruta donde se guardarán las imágenes generadas.
     """
     # Obtenemos los datos de las posiciones y velocidades
-    posiciones_x = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionX_{i}.txt')
-    posiciones_y = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionY_{i}.txt')
     velocidades_bici = pd.read_csv(f'Datos_Extraidos_Bici\\datos_bici_video_{i}.csv')['velocidad']
-    vx_marca = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadX_{i}.txt')
-    vy_marca = obtener_datos(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadY_{i}.txt')
+    
+    df_marca = pd.read_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv')
+    posiciones_x = df_marca['posicion_x']
+    posiciones_y = df_marca['posicion_y']
+    vx_marca = df_marca['velocidad_x']
+    vy_marca = df_marca['velocidad_y']
     
     # Extraemos los datos de conversión de la bicicleta y del marcador
     ruta_archivo = 'Conversiones\Pixeles_A_Metros.json'
@@ -32,11 +34,6 @@ def generar_imagenes_vectorizadas(i, output_path):
     # Convertimos a pixeles para graficar
     vx_marca = np.divide(vx_marca,valor)
     vy_marca = np.divide(vy_marca,valor)
-    '''
-    Lo comento porque, por ahora, no lo necesitaremos acá
-    ax = np.divide(ax,valor)
-    ay = np.divide(ay,valor)
-    '''
     posiciones_x = np.divide(posiciones_x,valor)
     posiciones_y = np.divide(posiciones_y,valor)
     velocidades_bici = np.divide(velocidades_bici,valor)
@@ -60,7 +57,7 @@ def generar_imagenes_vectorizadas(i, output_path):
                 punto_origen[0]+int(vx_marca[z])-int(velocidades_bici[z]),
                 punto_origen[1]+int(vy_marca[z])
             )
-            imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=3)
+            imagen_con_vector = cv2.arrowedLine(imagen, punto_origen, punto_destino, (0,0,255), thickness=10)
             cv2.imwrite(f'{output_path}\\imagen{frame_count}.jpg', imagen_con_vector)
             z = z + 1
 
@@ -68,28 +65,6 @@ def generar_imagenes_vectorizadas(i, output_path):
         x = x + 1
 
     cap.release()
-
-def obtener_datos(archivo_absoluto):
-    """
-    Obtiene los datos de un archivo de texto, donde cada línea es una lista de números separados por comas.
-
-    Args:
-    - archivo_absoluto (str): Ruta del archivo de texto.
-
-    Returns:
-    - Una lista de números de punto flotante.
-    """
-    # Abrimos el archivo de texto y leemos la línea
-    with open(archivo_absoluto, 'r') as f:
-        numeros = f.readline().split(',')
-
-        # Verificamos si el último elemento es una cadena vacía
-        if numeros[-1] == '':
-            # Eliminamos el último elemento si es una cadena vacía
-            numeros = numeros[:-1]
-
-        # Convertimos cada número a punto flotante y lo devolvemos
-        return [float(numero) for numero in numeros]
     
 def obtener_imagenes_del_directorio(directorio, extension='.jpg'):
     """

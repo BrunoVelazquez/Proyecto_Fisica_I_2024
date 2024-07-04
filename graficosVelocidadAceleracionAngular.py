@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import pandas as pd
+from utils import fill
 from scipy.signal import savgol_filter
 
 def calculate_angular_aceleration(w_values, t_values):
@@ -59,10 +60,10 @@ for i in range(1, 6):
     velocidad_angular_suavizada = savgol_filter(velocidades_angulares,len(velocidades_angulares),3)
     aceleraciones_angulares = calculate_angular_aceleration(velocidad_angular_suavizada,t)
     aceleraciones_angulares = savgol_filter(aceleraciones_angulares,len(aceleraciones_angulares),3)
-    
+    aceleraciones_angulares = fill(aceleraciones_angulares, max_length)
 
     df_marca['velocidad_angular'] = velocidad_angular_suavizada
-    df_marca['aceleracion_angular'] = np.append(aceleraciones_angulares, [aceleraciones_angulares[-1]]*(max_length - len(aceleraciones_angulares)))
+    df_marca['aceleracion_angular'] = aceleraciones_angulares
     
     df_marca.to_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv', index=False)
     fig, axs = plt.subplots(2, 1, figsize=(14, 10))
@@ -75,7 +76,7 @@ for i in range(1, 6):
     axs[0].grid(True)
 
     # Gráfico 2
-    plot_with_shades(axs[1], t[1:], aceleraciones_angulares, colors[3])
+    plot_with_shades(axs[1], t, aceleraciones_angulares, colors[3])
     axs[1].set_title('Aceleración Angular')
     axs[1].set_xlabel('Tiempo(s)')
     axs[1].set_ylabel('$α (rad/s^2)$')

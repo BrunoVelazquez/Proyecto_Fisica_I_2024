@@ -40,33 +40,12 @@ def plot_with_shades(ax, x, y, color):
 
 
 for i in range(1, 2):
-    t = []
-    x = []
-    y = []
-    vx = []
-    vy = []
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\datosRuedaX_{i}.txt', 'r') as f:
-            for linea in f:
-                partes = linea.split()
-                t.append(float(partes[0].replace(',', '.')))
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionX_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            x = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\posicionY_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            y = [float(numero.strip()) for numero in numeros]       
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadX_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            vx = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidadY_{i}.txt', 'r') as f:
-            numeros = f.readline().split(',')
-            vy = [float(numero.strip()) for numero in numeros]
-   
+    df_marca = pd.read_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv')
+    t = df_marca['tiempo']
+    x = df_marca['posicion_x']
+    y = df_marca['posicion_y']
+    vx = df_marca['velocidad_x']
+    vy = df_marca['velocidad_y']
 
     # Graficamos los datos
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))
@@ -84,8 +63,6 @@ for i in range(1, 2):
     axs[0, 0].grid(color='#2A3459')
     axs[0, 0].set_xlim([min(t), max(t)])
     axs[0, 0].set_ylim([min(x), max(x)])
-
-    print(y)
 
     plot_with_shades(axs[0,1], t, y, colors[5])
     axs[0, 1].set_xlabel('tiempo (s)')

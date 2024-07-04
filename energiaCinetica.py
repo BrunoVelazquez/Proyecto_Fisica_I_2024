@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 from scipy.signal import savgol_filter
+import pandas as pd
 
 def calculate_work_fd(fuerza_viscosa, posiciones_bici):
     posiciones_bici = posiciones_bici[1:]
@@ -44,33 +45,13 @@ colors = [
 ]
 
 for i in range(1, 6):
-    velociades_bici = []
-    posiciones_bici = []
-    fuerza_viscosa = []
-    tiempo = []
-    velocidades_angulares = []
-
-    with open(f'Datos_Extraidos_Bici\\Datos_Video_{i}\\velocidad_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        velocidades_bici = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Bici\\Datos_Video_{i}\\fuerza_viscosa_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        fuerza_viscosa = [float(numero.strip()) for numero in numeros]    
-    
-    with open(f'Datos_Extraidos_Bici\\Datos_Video_{i}\\posicion_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        posiciones_bici = [float(numero.strip()) for numero in numeros]
-
-    with open(f'Datos_Extraidos_Bici\\Datos_Video_{i}\\tiempo_{i}.txt', 'r') as f:
-        numeros = f.readline().split(',')
-        tiempo = [float(numero.strip()) for numero in numeros]    
-
-    with open(f'Datos_Extraidos_Marca\\Datos_Video_{i}\\velocidades_angulares_{i}.txt', 'r') as f:
-            for linea in f:
-                    valor = linea.strip()
-                    velocidades_angulares.append(float(valor))    
-
+    df_bici = pd.read_csv(f'Datos_Extraidos_Bici\\datos_bici_video_{i}.csv')
+    df_marca = pd.read_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv')
+    velocidades_bici = df_bici['velocidad']
+    posiciones_bici = df_bici['posicion']
+    fuerza_viscosa = df_bici['fuerza_viscosa']
+    tiempo = df_bici['tiempo']
+    velocidades_angulares = df_marca['velocidad_angular']
 
     # Calculo de energia cinetica de traslacion
     velocidades_bici = np.square(velocidades_bici)
