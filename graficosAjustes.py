@@ -103,32 +103,32 @@ for i in range(1, 2):
 
 
 
-    plot_with_shades(axs[1,0], t[1:], vx, colors[2])
+    plot_with_shades(axs[1,0], t, vx, colors[2])
     axs[1, 0].set_xlabel('tiempo (s)')
     axs[1, 0].set_ylabel('$v_{x} (m/s)$')
     axs[1, 0].grid(True)
     axs[1, 0].grid(color='#2A3459')
 
-    plot_with_shades(axs[1,0], t[1:], ajuste_vx(np.array(t[1:])), colors[4])
+    plot_with_shades(axs[1,0], t, ajuste_vx(np.array(t)), colors[4])
     axs[1, 0].set_xlabel('tiempo (s)')
     axs[1, 0].set_ylabel('$v_{x} (m/s)$')
     axs[1, 0].grid(True)
     axs[1, 0].grid(color='#2A3459')
-    axs[1, 0].set_xlim([min(t[1:]), max(t[1:])])
+    axs[1, 0].set_xlim([min(t), max(t)])
     axs[1, 0].set_ylim([min(vx), max(vx)])
 
-    plot_with_shades(axs[1,1], t[1:], vy, colors[3])
+    plot_with_shades(axs[1,1], t, vy, colors[3])
     axs[1, 1].set_xlabel('tiempo (s)')
     axs[1, 1].set_ylabel('$v_{y} (m/s)$')
     axs[1, 1].grid(True)
     axs[1, 1].grid(color='#2A3459')
 
-    plot_with_shades(axs[1,1], t[1:], ajuste_vy(np.array(t[1:])), colors[4])
+    plot_with_shades(axs[1,1], t, ajuste_vy(np.array(t)), colors[4])
     axs[1, 1].set_xlabel('tiempo (s)')
     axs[1, 1].set_ylabel('$v_{y} (m/s)$')
     axs[1, 1].grid(True)
     axs[1, 1].grid(color='#2A3459')
-    axs[1, 1].set_xlim([min(t[1:]), max(t[1:])])
+    axs[1, 1].set_xlim([min(t), max(t)])
     axs[1, 1].set_ylim([min(vy), max(vy)])
 
     plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.5)

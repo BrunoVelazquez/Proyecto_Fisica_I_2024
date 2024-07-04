@@ -70,8 +70,8 @@ for i in range(1, 6):
     # Graficar coeficiente viscoso en función del tiempo para cada video
 
 
-    fig, axs = plt.subplots(3, 3, figsize=(14, 10))
-    plt.figure(figsize=(8, 6))
+    #fig, axs = plt.subplots(3, 3, figsize=(14, 10))
+    #plt.figure(figsize=(8, 6))
     plot_with_shades(plt.gca(), t[:len(coeficiente_viscoso)], coeficiente_viscoso, colors[3])
     plt.title(f'Coeficiente viscoso en función del tiempo - Video {i}')
     plt.xlabel('Tiempo (s)')
