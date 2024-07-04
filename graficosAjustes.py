@@ -3,22 +3,7 @@ import matplotlib.pyplot as plt
 import cv2
 import pandas as pd
 from scipy.signal import savgol_filter
-
-
-# Configuración del estilo
-plt.style.use("dark_background")
-for param in ['text.color', 'axes.labelcolor', 'xtick.color', 'ytick.color']:
-    plt.rcParams[param] = '0.9'  # very light grey
-for param in ['figure.facecolor', 'axes.facecolor', 'savefig.facecolor']:
-    plt.rcParams[param] = '#212946'  # bluish dark grey
-colors = [
-    '#08F7FE',  # teal/cyan
-    '#FE53BB',  # pink
-    '#F5D300',  # yellow
-    '#00ff41',  # matrix green
-    '#FF073A',
-    '#FFE4C4',
-]
+from utils import plot_with_shades
 
 def ajuste_x(t):
     return 2.65 * t - 0.35 * np.sin(8.46 * t + 7.75) + 3.01
@@ -32,13 +17,6 @@ def ajuste_vx(t):
 def ajuste_vy(t):
     return 3.5 * np.exp(-0.12 * t) * np.sin(9.03 * t - 2.01) + 0.1
 
-
-# Función para aplicar el efecto de sombreado
-def plot_with_shades(ax, x, y, color):
-    ax.plot(x, y, marker='', color=color, linewidth=1)
-
-
-
 for i in range(1, 2):
     df_marca = pd.read_csv(f'Datos_Extraidos_Marca\\datos_marca_video_{i}.csv')
     t = df_marca['tiempo']
@@ -50,13 +28,13 @@ for i in range(1, 2):
     # Graficamos los datos
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))
 
-    plot_with_shades(axs[0,0], t, x, colors[0])
+    plot_with_shades(axs[0,0], t, x, 0)
     axs[0, 0].set_xlabel('tiempo (s)')
     axs[0, 0].set_ylabel('$x (m)$')
     axs[0, 0].grid(True)
     axs[0, 0].grid(color='#2A3459')
 
-    plot_with_shades(axs[0,0], t, ajuste_x(np.array(t)), colors[4])
+    plot_with_shades(axs[0,0], t, ajuste_x(np.array(t)), 4)
     axs[0, 0].set_xlabel('tiempo (s)')
     axs[0, 0].set_ylabel('$x (m)$')
     axs[0, 0].grid(True)
@@ -64,13 +42,13 @@ for i in range(1, 2):
     axs[0, 0].set_xlim([min(t), max(t)])
     axs[0, 0].set_ylim([min(x), max(x)])
 
-    plot_with_shades(axs[0,1], t, y, colors[5])
+    plot_with_shades(axs[0,1], t, y, 5)
     axs[0, 1].set_xlabel('tiempo (s)')
     axs[0, 1].set_ylabel('$y (m)$')
     axs[0, 1].grid(True)
     axs[0, 1].grid(color='#2A3459')
 
-    plot_with_shades(axs[0,1], t, ajuste_y(np.array(t)), colors[4])
+    plot_with_shades(axs[0,1], t, ajuste_y(np.array(t)), 4)
     axs[0, 1].set_xlabel('tiempo (s)')
     axs[0, 1].set_ylabel('$y (m)$')
     axs[0, 1].grid(True)
@@ -80,13 +58,13 @@ for i in range(1, 2):
 
 
 
-    plot_with_shades(axs[1,0], t, vx, colors[2])
+    plot_with_shades(axs[1,0], t, vx, 2)
     axs[1, 0].set_xlabel('tiempo (s)')
     axs[1, 0].set_ylabel('$v_{x} (m/s)$')
     axs[1, 0].grid(True)
     axs[1, 0].grid(color='#2A3459')
 
-    plot_with_shades(axs[1,0], t, ajuste_vx(np.array(t)), colors[4])
+    plot_with_shades(axs[1,0], t, ajuste_vx(np.array(t)), 4)
     axs[1, 0].set_xlabel('tiempo (s)')
     axs[1, 0].set_ylabel('$v_{x} (m/s)$')
     axs[1, 0].grid(True)
@@ -94,13 +72,13 @@ for i in range(1, 2):
     axs[1, 0].set_xlim([min(t), max(t)])
     axs[1, 0].set_ylim([min(vx), max(vx)])
 
-    plot_with_shades(axs[1,1], t, vy, colors[3])
+    plot_with_shades(axs[1,1], t, vy, 3)
     axs[1, 1].set_xlabel('tiempo (s)')
     axs[1, 1].set_ylabel('$v_{y} (m/s)$')
     axs[1, 1].grid(True)
     axs[1, 1].grid(color='#2A3459')
 
-    plot_with_shades(axs[1,1], t, ajuste_vy(np.array(t)), colors[4])
+    plot_with_shades(axs[1,1], t, ajuste_vy(np.array(t)), 4)
     axs[1, 1].set_xlabel('tiempo (s)')
     axs[1, 1].set_ylabel('$v_{y} (m/s)$')
     axs[1, 1].grid(True)
