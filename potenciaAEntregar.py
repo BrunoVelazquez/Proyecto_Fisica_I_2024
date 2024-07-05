@@ -18,9 +18,10 @@ for i in range(1,6):
     torque = np.multiply(torque,-1)
     potencia_a_entregar = np.multiply(torque,velocidades_angulares_plato[2:])
 
-    with open(f'Potencia_a_Entregar\\potencia_a_entregar_{i}.txt', "w") as file:
-        for item in potencia_a_entregar:
-            file.write(f"{round(item,2)}\n")
+    df_potencia = pd.DataFrame({
+        'potencia_a_entregar': np.round(potencia_a_entregar, 2)
+    })
+    df_potencia.to_csv(f'Potencia_a_Entregar\\potencia_a_entregar_{i}.csv', index=False)
 
     plt.figure(figsize=(8, 6))
     plot_with_shades(plt.gca(), t[:len(potencia_a_entregar)], potencia_a_entregar, 2)
