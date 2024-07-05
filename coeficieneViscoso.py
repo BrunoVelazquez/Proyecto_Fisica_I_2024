@@ -42,7 +42,7 @@ for i in range(1, 6):
         numeros = f.readline().split(',')
         t = [float(numero.strip()) for numero in numeros]
 
-    with open(f'Datos_Extraidos_Bici\\Datos_Video_{i}\\trabajo_total_instantaneo_{i}.txt', 'r') as f:
+    with open(f'Energia\\Datos_Video_{i}\\trabajo_total_instantaneo_{i}.txt', 'r') as f:
             numeros = f.readline().split(',')
             variacion_energia_cinetica = [float(numero.strip()) for numero in numeros]    
 
@@ -68,14 +68,12 @@ for i in range(1, 6):
         f.write(f"{coeficiente_viscoso}\n")
 
     # Graficar coeficiente viscoso en función del tiempo para cada video
-
-
-    fig, axs = plt.subplots(3, 3, figsize=(14, 10))
+    
     plt.figure(figsize=(8, 6))
     plot_with_shades(plt.gca(), t[:len(coeficiente_viscoso)], coeficiente_viscoso, colors[3])
-    plt.title(f'Coeficiente viscoso en función del tiempo - Video {i}')
+    plt.title(f'Coeficiente viscoso k en función del tiempo')
     plt.xlabel('Tiempo (s)')
-    plt.ylabel('Coeficiente Viscoso (Pas)')
+    plt.ylabel('Coeficiente Viscoso k (Pas)')
     plt.grid(color='#2A3459')
     plt.xlim([min(t[:len(coeficiente_viscoso)]), max(t[:len(coeficiente_viscoso)])])
     plt.ylim([min(coeficiente_viscoso)-3, max(coeficiente_viscoso)+3])
