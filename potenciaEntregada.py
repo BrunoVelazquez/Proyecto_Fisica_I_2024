@@ -4,23 +4,12 @@ from scipy.signal import savgol_filter
 import pandas as pd
 from utils import plot_with_shades
 
-# Lista para almacenar todos los valores de todas las iteraciones
-todos_valores = []
-
 for i in range(1,6):
     df_bici = pd.read_csv(f'Datos_Extraidos_Bici/datos_bici_video_{i}.csv')
     df_marca = pd.read_csv(f'Datos_Extraidos_Marca/datos_marca_video_{i}.csv')
-    torque = []
+    torque = pd.read_csv(f'Torque/torque_{i}.csv')['torque']
     velocidad_angular = df_marca['velocidad_angular'].to_numpy()
     t = df_bici['tiempo']
-
-    # Abrir el archivo en modo lectura
-    with open(f'Torque\\torque_{i}.txt', 'r') as file:
-        for line in file:
-            valores_linea = line.split()
-             # Convertir cada valor a tipo float y agregarlo a la lista
-            for valor in valores_linea:
-                torque.append(float(valor))
 
     # Calcular velocidad angular del plato con la relación de transmisión
     velocidades_angulares_plato = np.multiply(velocidad_angular, 20)
