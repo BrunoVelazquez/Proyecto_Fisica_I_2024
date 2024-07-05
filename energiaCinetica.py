@@ -71,7 +71,7 @@ for i in range(1, 6):
     # Calculo de energia cinetica de bicicleta
     velocidades_bici = np.square(velocidades_bici)
 
-    producto_parcial = np.multiply(velocidades_bici,79)
+    producto_parcial = np.multiply(velocidades_bici,79-2)
 
     energia_cinetica_bici = np.multiply(producto_parcial,0.5)
 
